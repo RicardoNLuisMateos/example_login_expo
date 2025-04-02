@@ -27,6 +27,13 @@ export default function SignIn() {
             Iniciar sesión
         </Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}
+          onPress={() => router.push('/register')}
+        >
+            Registrarse
+        </Text>
+      </TouchableOpacity>
       <StatusBar style="auto" />
     </View>
   );
