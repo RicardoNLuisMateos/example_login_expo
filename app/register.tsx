@@ -13,7 +13,6 @@ const RegisterScreen = () => {
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
-      // Text title
       <Text style={styles.title}>Register</Text>
 
       <TextInput style={styles.input} placeholder="First Name" defaultValue="John" />

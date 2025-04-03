@@ -15,6 +15,14 @@ export default function SignIn() {
       <Text style={styles.subTitle}>Ingresa a tu cuenta</Text>
       <TextInput style={styles.textInput} placeholder="Correo electrónico" value={email} onChangeText={setEmail}/>
       <TextInput style={styles.textInput} placeholder="Contraseña" value={password} onChangeText={setPassword}/>
+      {/* Forgot Password */}
+      <TouchableOpacity 
+        onPress={() => router.push('/forgot-password')}
+        style={styles.forgotPasswordContainer}
+      >
+        <Text style={styles.forgotPasswordText}>¿Olvidaste tu contraseña?</Text>
+      </TouchableOpacity>
+      {/* Sign In Button */}
       <TouchableOpacity style={styles.button}>
               <Text style={styles.buttonText} onPress={() => { 
                 if (signIn(email, password)) {
@@ -79,6 +87,16 @@ const styles = StyleSheet.create({
       color: "#f1f1f1",
       fontSize: 20,
       fontWeight: "bold",
+    },
+    forgotPasswordContainer: {
+      alignSelf: 'flex-end',
+      marginRight: '10%',
+      marginTop: 8,
+      marginBottom: 20,
+    },
+    forgotPasswordText: {
+      color: '#0066cc',
+      fontSize: 14,
     },
   });
   
