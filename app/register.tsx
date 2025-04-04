@@ -1,5 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import { 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  StyleSheet, 
+  KeyboardAvoidingView, 
+  Platform,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 
@@ -30,97 +41,106 @@ const RegisterScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity 
-        style={styles.backButton} 
-        onPress={() => router.back()}
-      >
-        <Ionicons name="arrow-back" size={24} color="black" />
-      </TouchableOpacity>
-      
-      <Text style={styles.title}>Register</Text>
-
-      <View style={styles.formContainer}>
-        <View style={styles.nameRow}>
-          <View style={styles.nameField}>
-            <Text style={styles.label}>First Name</Text>
-            <TextInput 
-              style={styles.input} 
-              value={firstName}
-              onChangeText={setFirstName}
-            />
-          </View>
-          
-          <View style={styles.nameField}>
-            <Text style={styles.label}>Last Name</Text>
-            <TextInput 
-              style={styles.input} 
-              value={lastName}
-              onChangeText={setLastName}
-            />
-          </View>
-        </View>
-
-        <View style={styles.fieldContainer}>
-          <Text style={styles.label}>E-mail</Text>
-          <TextInput 
-            style={styles.input} 
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-        </View>
-
-        <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Password</Text>
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="••••••••"
-              secureTextEntry={!passwordVisible}
-              value={password}
-              onChangeText={setPassword}
-            />
-            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
-              <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={24} color="gray" />
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+          <View style={styles.container}>
+            <TouchableOpacity 
+              style={styles.backButton} 
+              onPress={() => router.back()}
+            >
+              <Ionicons name="arrow-back" size={24} color="black" />
             </TouchableOpacity>
+            
+            <Text style={styles.title}>Register</Text>
+
+            <View style={styles.formContainer}>
+              <View style={styles.nameRow}>
+                <View style={styles.nameField}>
+                  <Text style={styles.label}>First Name</Text>
+                  <TextInput 
+                    style={styles.input} 
+                    value={firstName}
+                    onChangeText={setFirstName}
+                  />
+                </View>
+                
+                <View style={styles.nameField}>
+                  <Text style={styles.label}>Last Name</Text>
+                  <TextInput 
+                    style={styles.input} 
+                    value={lastName}
+                    onChangeText={setLastName}
+                  />
+                </View>
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <Text style={styles.label}>E-mail</Text>
+                <TextInput 
+                  style={styles.input} 
+                  placeholder="Enter your email"
+                  value={email}
+                  onChangeText={setEmail}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                />
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <Text style={styles.label}>Password</Text>
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={styles.passwordInput}
+                    placeholder="••••••••"
+                    secureTextEntry={!passwordVisible}
+                    value={password}
+                    onChangeText={setPassword}
+                  />
+                  <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+                    <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={24} color="gray" />
+                  </TouchableOpacity>
+                </View>
+                <Text style={styles.passwordHint}>must contain 8 char.</Text>
+              </View>
+
+              <View style={styles.fieldContainer}>
+                <Text style={styles.label}>Confirm Password</Text>
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={styles.passwordInput}
+                    placeholder="••••••••"
+                    secureTextEntry={!confirmPasswordVisible}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
+                  />
+                  <TouchableOpacity onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
+                    <Ionicons name={confirmPasswordVisible ? "eye-off" : "eye"} size={24} color="gray" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+
+            <View style={styles.bottomContainer}>
+              <TouchableOpacity 
+                style={styles.button}
+                onPress={handleCreateAccount}
+              >
+                <Text style={styles.buttonText}>Create Account</Text>
+              </TouchableOpacity>
+
+              <Text style={styles.termsText}>
+                By continuing, you agree to our <Text style={styles.linkText}>Terms of Service</Text> and{' '}
+                <Text style={styles.linkText}>Privacy Policy</Text>.
+              </Text>
+            </View>
           </View>
-          <Text style={styles.passwordHint}>must contain 8 char.</Text>
-        </View>
-
-        <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Confirm Password</Text>
-          <View style={styles.passwordContainer}>
-            <TextInput
-              style={styles.passwordInput}
-              placeholder="••••••••"
-              secureTextEntry={!confirmPasswordVisible}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-            />
-            <TouchableOpacity onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
-              <Ionicons name={confirmPasswordVisible ? "eye-off" : "eye"} size={24} color="gray" />
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
-      <View style={styles.bottomContainer}>
-        <TouchableOpacity 
-          style={styles.button}
-          onPress={handleCreateAccount}
-        >
-          <Text style={styles.buttonText}>Create Account</Text>
-        </TouchableOpacity>
-
-        <Text style={styles.termsText}>
-          By continuing, you agree to our <Text style={styles.linkText}>Terms of Service</Text> and{' '}
-          <Text style={styles.linkText}>Privacy Policy</Text>.
-        </Text>
-      </View>
-    </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
