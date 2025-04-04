@@ -1,54 +1,125 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { router } from "expo-router";
 
 const RegisterScreen = () => {
-  const navigation = useNavigation();
+  const [firstName, setFirstName] = useState('John');
+  const [lastName, setLastName] = useState('Doe');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
+  const handleCreateAccount = () => {
+    // Aquí iría la lógica para crear la cuenta
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      alert('Por favor completa todos los campos');
+      return;
+    }
+    
+    if (password !== confirmPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+    
+    // Simulación de registro exitoso
+    alert('Cuenta creada con éxito');
+    router.replace('/sign-in');
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+      <TouchableOpacity 
+        style={styles.backButton} 
+        onPress={() => router.back()}
+      >
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
+      
       <Text style={styles.title}>Register</Text>
 
-      <TextInput style={styles.input} placeholder="First Name" defaultValue="John" />
-      <TextInput style={styles.input} placeholder="Last Name" defaultValue="Doe" />
-      <TextInput style={styles.input} placeholder="Enter your email" keyboardType="email-address" />
-      
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.passwordInput}
-          placeholder="Password"
-          secureTextEntry={!passwordVisible}
-        />
-        <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
-          <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={24} color="gray" />
-        </TouchableOpacity>
+      <View style={styles.formContainer}>
+        <View style={styles.nameRow}>
+          <View style={styles.nameField}>
+            <Text style={styles.label}>First Name</Text>
+            <TextInput 
+              style={styles.input} 
+              value={firstName}
+              onChangeText={setFirstName}
+            />
+          </View>
+          
+          <View style={styles.nameField}>
+            <Text style={styles.label}>Last Name</Text>
+            <TextInput 
+              style={styles.input} 
+              value={lastName}
+              onChangeText={setLastName}
+            />
+          </View>
+        </View>
+
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>E-mail</Text>
+          <TextInput 
+            style={styles.input} 
+            placeholder="Enter your email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
+
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Password</Text>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="••••••••"
+              secureTextEntry={!passwordVisible}
+              value={password}
+              onChangeText={setPassword}
+            />
+            <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+              <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={24} color="gray" />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.passwordHint}>must contain 8 char.</Text>
+        </View>
+
+        <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Confirm Password</Text>
+          <View style={styles.passwordContainer}>
+            <TextInput
+              style={styles.passwordInput}
+              placeholder="••••••••"
+              secureTextEntry={!confirmPasswordVisible}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+            />
+            <TouchableOpacity onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
+              <Ionicons name={confirmPasswordVisible ? "eye-off" : "eye"} size={24} color="gray" />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-      <Text style={styles.passwordHint}>must contain 8 char.</Text>
 
-      <View style={styles.passwordContainer}>
-        <TextInput
-          style={styles.passwordInput}
-          placeholder="Confirm Password"
-          secureTextEntry={!confirmPasswordVisible}
-        />
-        <TouchableOpacity onPress={() => setConfirmPasswordVisible(!confirmPasswordVisible)}>
-          <Ionicons name={confirmPasswordVisible ? "eye-off" : "eye"} size={24} color="gray" />
+      <View style={styles.bottomContainer}>
+        <TouchableOpacity 
+          style={styles.button}
+          onPress={handleCreateAccount}
+        >
+          <Text style={styles.buttonText}>Create Account</Text>
         </TouchableOpacity>
+
+        <Text style={styles.termsText}>
+          By continuing, you agree to our <Text style={styles.linkText}>Terms of Service</Text> and{' '}
+          <Text style={styles.linkText}>Privacy Policy</Text>.
+        </Text>
       </View>
-
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Create Account</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.termsText}>
-        By continuing, you agree to our <Text style={styles.linkText}>Terms of Service</Text> and <Text style={styles.linkText}>Privacy Policy</Text>.
-      </Text>
     </View>
   );
 };
@@ -60,7 +131,9 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   backButton: {
-    marginBottom: 20,
+    marginTop: 20,
+    marginBottom: 10,
+    alignSelf: 'flex-start',
   },
   title: {
     fontSize: 24,
@@ -68,12 +141,32 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
   },
+  formContainer: {
+    flex: 1,
+  },
+  nameRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+  },
+  nameField: {
+    width: '48%',
+  },
+  fieldContainer: {
+    marginBottom: 15,
+  },
+  label: {
+    fontSize: 14,
+    fontWeight: "500",
+    marginBottom: 8,
+    color: "#333",
+  },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
-    padding: 10,
-    marginBottom: 10,
+    padding: 12,
+    fontSize: 16,
   },
   passwordContainer: {
     flexDirection: "row",
@@ -81,37 +174,41 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
-    paddingHorizontal: 10,
-    marginBottom: 5,
+    paddingHorizontal: 12,
   },
   passwordInput: {
     flex: 1,
-    padding: 10,
+    padding: 12,
+    fontSize: 16,
   },
   passwordHint: {
     fontSize: 12,
     color: "gray",
-    marginBottom: 10,
+    marginTop: 4,
+  },
+  bottomContainer: {
+    marginTop: 'auto',
   },
   button: {
     backgroundColor: "#2D7A4A",
-    padding: 15,
-    borderRadius: 8,
+    padding: 16,
+    borderRadius: 30,
     alignItems: "center",
-    marginTop: 200,
+    marginBottom: 16,
   },
   buttonText: {
     color: "white",
     fontWeight: "bold",
+    fontSize: 16,
   },
   termsText: {
     textAlign: "center",
     fontSize: 12,
     color: "gray",
-    marginTop: 10,
+    marginBottom: 20,
   },
   linkText: {
-    color: "blue",
+    color: "#0066cc",
     textDecorationLine: "underline",
   },
 });
